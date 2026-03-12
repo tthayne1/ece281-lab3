@@ -6,3 +6,13 @@ Targeted toward Digilent Basys3. Make sure to install the [board files](https://
 
 Built for Vivado 2024.2 on Windows 11.
 
+\## Waveform
+
+
+
+!\[Waveform](lab\_3\_waveform.png)
+
+
+
+
+
