@@ -65,10 +65,11 @@ entity top_basys3 is
 		
 		-- Switches (16 total)
 		sw  	:   in std_logic_vector(15 downto 0); -- sw(15) = left; sw(0) = right
+		
 		-- LEDs (16 total)
 		-- taillights (LC, LB, LA, RA, RB, RC)
 		led 	:   out std_logic_vector(15 downto 0);  -- led(15:13) --> L
-                                                        -- led(2:0)   --> R
+                                                        -- led(2:0) --> R
 		
 		-- Buttons (5 total)
 		--btnC	:	in	std_logic
@@ -78,7 +79,6 @@ entity top_basys3 is
 		--btnD	:	in	std_logic;	
 	);
 end top_basys3;
-
 architecture top_basys3_arch of top_basys3 is 
   
 	-- declare components
@@ -90,7 +90,6 @@ architecture top_basys3_arch of top_basys3 is
 			o_lights_R      : out std_logic_vector(2 downto 0)
 		);
 	end component thunderbird_fsm;
-
 	component clock_divider is
 		generic(k_DIV : natural := 2);
 		port(
@@ -99,7 +98,6 @@ architecture top_basys3_arch of top_basys3 is
 			o_clk   : out std_logic
 		);
 	end component clock_divider;
-
 	signal w_clk_div  : std_logic;
 	signal w_lights_L : std_logic_vector(2 downto 0);
 	signal w_lights_R : std_logic_vector(2 downto 0);
@@ -113,7 +111,6 @@ begin
 			i_reset => btnL,
 			o_clk   => w_clk_div
 		);
-
 	fsm_inst : thunderbird_fsm
 		port map(
 			i_clk   => w_clk_div,
@@ -125,20 +122,17 @@ begin
 		);
 	
 	-- CONCURRENT STATEMENTS ----------------------------
-	led(15) <= w_lights_L(2);
-	led(14) <= w_lights_L(1);
 	led(13) <= w_lights_L(0);
-
+	led(14) <= w_lights_L(1);
+	led(15) <= w_lights_L(2);
 	led(2) <= w_lights_R(0);
 	led(1) <= w_lights_R(1);
 	led(0) <= w_lights_R(2);
-
 	-- ground unused LEDs
+	led(12 downto 3) <= (others => '0');
 	-- leave unused switches UNCONNECTED
 	
 	-- Ignore the warnings associated with these signals
 	-- Alternatively, you can create a different board implementation, 
 	--   or make additional adjustments to the constraints file
-	led(12 downto 3) <= (others => '0');
-	
 end top_basys3_arch;
